@@ -7,9 +7,13 @@ if [ "$JDK_VERSION" != "8" ] && [ "$JDK_VERSION" != "11" ] && [ "$JDK_VERSION" !
   exit 1
 fi
 
-export $(grep -v '^#' version.properties | xargs)
 
 JDK_ROOT=$(pwd)
+
+wget -O version.properties "https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/version.properties" || { echo "version.properties 파일 다운로드에 실패했습니다."; eixt 1; }
+
+export $(grep -v '^#' version.properties | xargs)
+
 
 if [ -d "$JDK_VERSION" ]; then
   rm "$JDK_VERSION"
