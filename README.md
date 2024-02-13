@@ -37,22 +37,39 @@ cd /usr/local/JDK
 
 ```
     /usr/local/JDK
-            ├── 11 -> archive/11/latest
-            ├── 17 -> archive/17/latest
-            ├── 21 -> archive/21/latest
-            ├── 8 -> archive/8/latest
-            └── archive
+      ├── 11 -> archive/11/jdk-11.0.22+7
+      ├── 17 -> archive/17/jdk-17.0.10+7
+      ├── 21 -> archive/21/jdk-21.0.2+13
+      ├── 8 -> archive/8/jdk8u402-b06
+      └── archive
+          ├── 11
+          │   └── jdk-11.0.22+7
+          ├── 17
+          │   └── jdk-17.0.10+7
+          ├── 21
+          │   └── jdk-21.0.2+13
+          ├── 8
+          │   └── jdk8u402-b06
+          └── temp
                 ├── 11
-                │   └── latest
+                │   ├── OpenJDK11U-jdk_x64_linux_hotspot_11.0.22_7.tar.gz
+                │   └── extract
                 ├── 17
-                │   └── latest
+                │   ├── OpenJDK17U-jdk_x64_linux_hotspot_17.0.10_7.tar.gz
+                │   └── extract
                 ├── 21
-                │   └── latest
+                │   ├── OpenJDK21U-jdk_x64_linux_hotspot_21.0.2_13.tar.gz
+                │   └── extract
                 └── 8
-                    └── latest
+                    ├── OpenJDK8U-jdk_x64_linux_hotspot_8u402b06.tar.gz
+                    └── extract
 ```
-
-
+* `temp/${버전번호}` 경로
+  * 압축 파일이 다운로드 되는 경로
+  * 한번 다운로드된 파일은 일부러 지우진 않음
+* `temp/${버전번호}/extrat`
+  * 압축 파일을 푸는 경로
+  * 실행할 때마다 갱신함
 
 
 
