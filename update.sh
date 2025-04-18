@@ -21,7 +21,7 @@ else
   echo "[알림] ${JDK_VERSION} 심볼릭 링크가 존재하지 않습니다."
 fi
 
-TEMP_JDK_DIR=${JDK_ROOT}/archive/temp/${JDK_VERSION}
+TEMP_JDK_DIR=${JDK_ROOT}/temp/${JDK_VERSION}
 # 압축 파일을 해제할 임시경로
 TEMP_JDK_DIR_EXTRACT=${TEMP_JDK_DIR}/extract
 TARGET_JDK_DIR=${JDK_ROOT}/archive/${JDK_VERSION}

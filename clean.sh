@@ -2,7 +2,7 @@
 
 JDK_ROOT=$(pwd)
 ARCHIVE_DIR="${JDK_ROOT}/archive"
-TEMP_DIR="${ARCHIVE_DIR}/temp"
+TEMP_DIR="${JDK_ROOT}/temp"
 
 # 상수로 버전 목록 정의
 VERSIONS="8 11 17 21"
@@ -26,12 +26,6 @@ case "$1" in
 
     # archive 디렉토리에서 삭제 제외 목록에 없는 디렉토리 삭제
     for DIR in "${ARCHIVE_DIR}"/*/*; do
-      # temp 디렉토리는 삭제 대상에서 제외
-      if [ "$DIR" = "$TEMP_DIR" ] || echo "$DIR" | grep -q "^$TEMP_DIR/"; then
-        echo "[알림] temp 이하 디렉토리($DIR)는 삭제하지 않습니다."
-        continue
-      fi
-
       # DIR이 삭제 제외 목록에 있는지 확인      
       if ! echo "$EXCLUDE_DIRS" | grep -q -w "$DIR"; then
         echo "[알림] 삭제: $DIR"
@@ -42,11 +36,11 @@ case "$1" in
     done
     ;;
 
-  "temp") # 기능 2: archive/temp 삭제
-    echo "[알림] archive/temp 디렉토리를 삭제합니다..."
-    rm -rf "${TEMP_DIR}"
-    mkdir -p "${TEMP_DIR}"
-    echo "[완료] archive/temp 디렉토리가 초기화되었습니다."
+  "temp") # 기능 2: temp 삭제
+    echo "[알림] temp($TEMP_DIR) 디렉토리를 삭제합니다..."
+    mkdir -p "$TEMP_DIR"
+    # rm -rf "$TEMP_DIR"
+    echo "[완료] temp 디렉토리가 초기화되었습니다."
     ;;
 
   "all") # 기능 3: 모든 심볼릭 링크 및 archive 디렉토리 삭제
