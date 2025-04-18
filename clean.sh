@@ -27,7 +27,7 @@ case "$1" in
     # archive 디렉토리에서 삭제 제외 목록에 없는 디렉토리 삭제
     for DIR in "${ARCHIVE_DIR}"/*/*; do
       # temp 디렉토리는 삭제 대상에서 제외
-      if [ "$DIR" = "$TEMP_DIR" ] || [[ "$DIR" == "$TEMP_DIR/"* ]]; then
+      if [ "$DIR" = "$TEMP_DIR" ] || echo "$DIR" | grep -q "^$TEMP_DIR/"; then
         echo "[알림] temp 디렉토리는 삭제하지 않습니다."
         continue
       fi
