@@ -10,35 +10,34 @@ VERSIONS="8 11 17 21"
 case "$1" in
   "") # 기능 1: 심볼릭 링크에 연결되지 않은 디렉토리 삭제
     echo "[알림] 심볼릭 링크에 연결되지 않은 디렉토리를 삭제합니다..."
+    # 삭제하지 않을 경로 목록 생성
+    EXCLUDE_DIRS=""
+
     for VERSION in $VERSIONS; do
       if [ -L "${JDK_ROOT}/${VERSION}" ]; then
         TARGET=$(readlink "${JDK_ROOT}/${VERSION}")
+        EXCLUDE_DIRS="${EXCLUDE_DIRS} ${JDK_ROOT}/${TARGET}"                # 심볼릭 링크 타깃 추가
+        EXCLUDE_DIRS="${EXCLUDE_DIRS} ${JDK_ROOT}/$(dirname "${TARGET}")"   # 타깃의 상위 디렉토리 추가
         echo "[알림] 심볼릭 링크 ${VERSION} -> ${TARGET} 유지"
       else
         echo "[알림] 심볼릭 링크 ${VERSION}가 존재하지 않습니다."
       fi
     done
 
-    # archive 디렉토리에서 심볼릭 링크가 가리키지 않는 디렉토리 삭제
-    for DIR in "${ARCHIVE_DIR}"/*; do
+    # archive 디렉토리에서 삭제 제외 목록에 없는 디렉토리 삭제
+    for DIR in "${ARCHIVE_DIR}"/*/*; do
       # temp 디렉토리는 삭제 대상에서 제외
       if [ "$DIR" = "$TEMP_DIR" ]; then
         echo "[알림] temp 디렉토리는 삭제하지 않습니다."
         continue
       fi
 
-      if [ -d "$DIR" ] && [ ! -L "$DIR" ]; then
-        LINKED=false
-        for VERSION in $VERSIONS; do
-          if [ -L "${JDK_ROOT}/${VERSION}" ] && [ "$(readlink "${JDK_ROOT}/${VERSION}")" = "$DIR" ]; then
-            LINKED=true
-            break
-          fi
-        done
-        if [ "$LINKED" = false ]; then
-          echo "[알림] 삭제: $DIR"
-          rm -rf "$DIR"
-        fi
+      # DIR이 삭제 제외 목록에 있는지 확인      
+      if ! echo "$EXCLUDE_DIRS" | grep -q -w "$DIR"; then
+        echo "[알림] 삭제: $DIR"
+        rm -rf "$DIR"
+      else
+        echo "[알림] 유지: $DIR"
       fi
     done
     ;;
