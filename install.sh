@@ -17,6 +17,8 @@ CURRENT_USER=$(whoami)
 CURRENT_GROUP=$(id -g -n)
 
 sudo chown $CURRENT_USER.$CURRENT_GROUP $JDK_SH_ROOT
+
+rm -f $JDK_SH_ROOT/update.sh $JDK_SH_ROOT/clean.sh
 wget https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/update.sh -O $JDK_SH_ROOT/update.sh || { echo "[오류] update.sh 파일 다운로드에 실패했습니다."; exit 1; }
 wget https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/clean.sh -O $JDK_SH_ROOT/clean.sh || { echo "[오류] clean.sh 파일 다운로드에 실패했습니다."; exit 1; }
 
