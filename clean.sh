@@ -4,11 +4,17 @@ JDK_ROOT=$(pwd)
 ARCHIVE_DIR="${JDK_ROOT}/archive"
 TEMP_DIR="${JDK_ROOT}/temp"
 
+# version.properties 파일이 없을 때만 다운로드
+if [ ! -f "version.properties" ]; then
+  wget -O version.properties "https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/version.properties" || { echo "[오류] version.properties 파일 다운로드에 실패했습니다."; exit 1; }
+fi
+
 # version.properties에서 지원 버전 목록 가져오기
 if [ -f "${JDK_ROOT}/version.properties" ]; then
-  set -a
+  #set -a
   . ./version.properties
-  set +a
+  #set +a
+  # 💡환경 변수들이 현재 셀 영역 내에서만 사용되서 환경변수 export가 필요없을 것 같다.
   VERSIONS="${SUPPORTED_VERSIONS}"
 else
   echo "[오류] version.properties 파일이 존재하지 않습니다: ${JDK_ROOT}/version.properties"

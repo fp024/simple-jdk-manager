@@ -13,9 +13,10 @@ fi
 # set -a: 이후 선언되는 변수들을 자동으로 export (자식 프로세스에서도 사용 가능)
 # . ./version.properties: 파일을 source로 읽어서 변수 로드 (주석은 자동으로 무시됨)
 # set +a: 자동 export 해제
-set -a
+#set -a
 . ./version.properties
-set +a
+#set +a
+# 💡환경 변수들이 현재 셀 영역 내에서만 사용되서 환경변수 export가 필요없을 것 같다.
 
 # 지원 버전 검증
 VALID_VERSION=false
