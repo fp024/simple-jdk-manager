@@ -6,7 +6,9 @@ TEMP_DIR="${JDK_ROOT}/temp"
 
 # version.properties에서 지원 버전 목록 가져오기
 if [ -f "${JDK_ROOT}/version.properties" ]; then
-  export $(grep -v '^#' "${JDK_ROOT}/version.properties" | xargs)
+  set -a
+  . ./version.properties
+  set +a
   VERSIONS="${SUPPORTED_VERSIONS}"
 else
   echo "[오류] version.properties 파일이 존재하지 않습니다: ${JDK_ROOT}/version.properties"
