@@ -4,8 +4,10 @@ JDK_VERSION=$1
 
 JDK_ROOT=$(pwd)
 
-# version.properties 파일 다운로드
-wget -O version.properties "https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/version.properties" || { echo "[오류] version.properties 파일 다운로드에 실패했습니다."; exit 1; }
+# version.properties 파일이 없을 때만 다운로드
+if [ ! -f "version.properties" ]; then
+  wget -O version.properties "https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/version.properties" || { echo "[오류] version.properties 파일 다운로드에 실패했습니다."; exit 1; }
+fi
 
 export $(grep -v '^#' version.properties | xargs)
 
