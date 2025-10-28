@@ -4,8 +4,14 @@ JDK_ROOT=$(pwd)
 ARCHIVE_DIR="${JDK_ROOT}/archive"
 TEMP_DIR="${JDK_ROOT}/temp"
 
-# 상수로 버전 목록 정의
-VERSIONS="8 17 21 25"
+# version.properties에서 지원 버전 목록 가져오기
+if [ -f "${JDK_ROOT}/version.properties" ]; then
+  export $(grep -v '^#' "${JDK_ROOT}/version.properties" | xargs)
+  VERSIONS="${SUPPORTED_VERSIONS}"
+else
+  echo "[오류] version.properties 파일이 존재하지 않습니다: ${JDK_ROOT}/version.properties"
+  exit 1
+fi
 
 case "$1" in
   "") # 기능 1: 심볼릭 링크에 연결되지 않은 디렉토리 삭제

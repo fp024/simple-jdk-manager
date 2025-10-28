@@ -2,17 +2,26 @@
 
 JDK_VERSION=$1
 
-if [ "$JDK_VERSION" != "8" ] && [ "$JDK_VERSION" != "17" ] && [ "$JDK_VERSION" != "21" ] && [ "$JDK_VERSION" != "25" ]; then
-  echo "[알림] 버전을 입력해주세요. 가능한 버전은 8, 17, 21, 25 입니다."
-  exit 1
-fi
-
-
 JDK_ROOT=$(pwd)
 
-wget -O version.properties "https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/version.properties" || { echo "[오류] version.properties 파일 다운로드에 실패했습니다."; eixt 1; }
+# version.properties 파일 다운로드
+wget -O version.properties "https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/version.properties" || { echo "[오류] version.properties 파일 다운로드에 실패했습니다."; exit 1; }
 
 export $(grep -v '^#' version.properties | xargs)
+
+# 지원 버전 검증
+VALID_VERSION=false
+for VERSION in $SUPPORTED_VERSIONS; do
+  if [ "$JDK_VERSION" = "$VERSION" ]; then
+    VALID_VERSION=true
+    break
+  fi
+done
+
+if [ "$VALID_VERSION" = "false" ]; then
+  echo "[알림] 버전을 입력해주세요. 가능한 버전은 ${SUPPORTED_VERSIONS} 입니다."
+  exit 1
+fi
 
 
 if [ -d "${JDK_VERSION}" ]; then
