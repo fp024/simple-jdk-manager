@@ -5,7 +5,7 @@ ARCHIVE_DIR="${JDK_ROOT}/archive"
 TEMP_DIR="${JDK_ROOT}/temp"
 
 # 상수로 버전 목록 정의
-VERSIONS="8 11 17 21"
+VERSIONS="8 17 21 25"
 
 case "$1" in
   "") # 기능 1: 심볼릭 링크에 연결되지 않은 디렉토리 삭제

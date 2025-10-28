@@ -2,8 +2,8 @@
 
 JDK_VERSION=$1
 
-if [ "$JDK_VERSION" != "8" ] && [ "$JDK_VERSION" != "11" ] && [ "$JDK_VERSION" != "17" ] && [ "$JDK_VERSION" != "21" ]; then
-  echo "[알림] 버전을 입력해주세요. 가능한 버전은 8, 11, 17, 21 입니다."
+if [ "$JDK_VERSION" != "8" ] && [ "$JDK_VERSION" != "17" ] && [ "$JDK_VERSION" != "21" ] && [ "$JDK_VERSION" != "25" ]; then
+  echo "[알림] 버전을 입력해주세요. 가능한 버전은 8, 17, 21, 25 입니다."
   exit 1
 fi
 
