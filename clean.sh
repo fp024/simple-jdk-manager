@@ -119,8 +119,48 @@ case "$1" in
     echo "[완료] archive 디렉토리와 모든 심볼릭 링크가 삭제되었습니다."
     ;;
 
-  *) # 잘못된 명령어 처리
-    echo "[오류] 잘못된 명령입니다. 사용법: clean.sh [temp|all]"
-    exit 1
+    *) # 기능 4: 특정 버전의 모든 관련 파일 삭제 (심볼릭 링크, archive, temp)
+    VERSION_TO_CLEAN="$1"
+    
+    # 지원되는 버전인지 확인
+    if echo "$VERSIONS" | grep -q -w "$VERSION_TO_CLEAN"; then
+      echo "[알림] ${VERSION_TO_CLEAN} 버전의 관련 파일들을 삭제합니다..."
+      
+      # 1. 심볼릭 링크 삭제
+      if [ -L "${JDK_ROOT}/${VERSION_TO_CLEAN}" ]; then
+        TARGET=$(readlink "${JDK_ROOT}/${VERSION_TO_CLEAN}")
+        echo "[알림] 심볼릭 링크 삭제: ${VERSION_TO_CLEAN} -> ${TARGET}"
+        rm "${JDK_ROOT}/${VERSION_TO_CLEAN}"
+        
+        # 2. archive 디렉토리에서 해당 버전의 디렉토리 삭제
+        TARGET_DIR="${JDK_ROOT}/${TARGET}"
+        if [ -d "$TARGET_DIR" ]; then
+          echo "[알림] archive 디렉토리 삭제: $TARGET_DIR"
+          rm -rf "$TARGET_DIR"
+        fi
+        
+        # 3. archive의 상위 디렉토리가 비어있으면 삭제
+        TARGET_PARENT="${JDK_ROOT}/$(dirname "${TARGET}")"
+        if [ -d "$TARGET_PARENT" ] && [ -z "$(ls -A "$TARGET_PARENT")" ]; then
+          echo "[알림] 빈 디렉토리 삭제: $TARGET_PARENT"
+          rm -rf "$TARGET_PARENT"
+        fi
+      else
+        echo "[알림] 심볼릭 링크 ${VERSION_TO_CLEAN}가 존재하지 않습니다."
+      fi
+      
+      # 4. temp/버전 디렉토리 삭제
+      TEMP_VERSION_DIR="${TEMP_DIR}/${VERSION_TO_CLEAN}"
+      if [ -d "$TEMP_VERSION_DIR" ]; then
+        echo "[알림] temp/${VERSION_TO_CLEAN} 디렉토리 삭제: $TEMP_VERSION_DIR"
+        rm -rf "$TEMP_VERSION_DIR"
+      fi
+      
+      echo "[완료] ${VERSION_TO_CLEAN} 버전의 관련 파일들이 삭제되었습니다."
+    else
+      echo "[오류] 잘못된 명령입니다. 사용법: clean.sh [temp 버전|all|버전]"
+      echo "지원되는 버전: $VERSIONS"
+      exit 1
+    fi
     ;;
 esac

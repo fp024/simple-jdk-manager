@@ -69,7 +69,7 @@ cd /usr/local/JDK
 ```
 * `temp/${버전번호}` 경로
   * 압축 파일이 다운로드 되는 경로
-* `temp/${버전번호}/extrat`
+* `temp/${버전번호}/extract`
   * 압축 파일을 푸는 경로
   * 실행할 때마다 갱신함
 
@@ -80,10 +80,13 @@ cd /usr/local/JDK
 * https://github.com/fp024/simple-jdk-manager/blob/master/version.properties
 
   ```properties
+  # 지원되는 버전 목록 (공백으로 구분)
+  SUPPORTED_VERSIONS="8 17 21 25"
+  
   JDK_URL_8=https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u452-b09/OpenJDK8U-jdk_x64_linux_hotspot_8u452b09.tar.gz
-  JDK_URL_11=https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.27%2B6/OpenJDK11U-jdk_x64_linux_hotspot_11.0.27_6.tar.gz
   JDK_URL_17=https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_x64_linux_hotspot_17.0.15_6.tar.gz
   JDK_URL_21=https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_linux_hotspot_21.0.7_6.tar.gz
+  JDK_URL_25=https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.1%2B11/OpenJDK25U-jdk_x64_linux_hotspot_25.0.1_11.tar.gz
   ```
 
 JDK 벤더는 temurin만 사용하고 있는데, 시간이 지나서 버전업이 되면 이 파일을 버전업하고 github에 반영해주고...
@@ -92,7 +95,9 @@ JDK 벤더는 temurin만 사용하고 있는데, 시간이 지나서 버전업�
 
 > **😅 해깔릴 수 있는 부분**
 >
-> `install.sh`를 실행할 때, JDK 설치경로로 복사되는게 아니고, `version.properties`는 `update.sh` 실행시 항상 github에서 최신버전을 받아온다.  
+> `install.sh`를 실행할 때, 로컬에 `update.sh`, `clean.sh` 파일이 있으면 해당 파일을 복사하고, 없으면 GitHub에서 다운로드합니다.
+>
+> `version.properties` 또한 `update.sh`, `clean.sh` 실행시 로컬에 파일이 없을 때만 GitHub에서 최신버전을 받아옵니다.  
 
 
 
@@ -106,18 +111,28 @@ JDK 벤더는 temurin만 사용하고 있는데, 시간이 지나서 버전업�
 
    > 💡 `version.properties`의 내용이 업데이트 되었을 때, 심볼릭 링크를 재작성하는데, 이 명령을 실행해서 archive 이하의 이전 버전의 JDK를 정리 할 수 있다.
 
-2. temp 디렉토리의 다운로드한 압축 파일 정리
+2. temp 디렉토리 정리
 
    ```sh
    ./clean.sh temp
    ```
 
-   > temp의 모든 내용을 지우진 않고, `version.properties`에 명시된 URL의 파일만 남기고 나머지는 정리한다.
+   > temp 디렉토리 내에서 압축을 푼 extract 디렉토리들과 심볼릭 링크 연결이 제거된 항목들만 삭제한다.
+   > 
+   > `version.properties`에 정의된 다운로드 URL의 압축 파일들과 해당 파일을 포함하는 버전 디렉토리는 유지된다.
 
-3. 전체 정리
+3. 특정 버전의 모든 관련 파일 삭제
 
    ```sh
-   ./clean all
+   ./clean.sh 17   # JDK 17의 심볼릭 링크, archive, temp 모두 삭제
+   ```
+
+   > 지정한 버전의 심볼릭 링크, archive 디렉토리, temp 디렉토리를 모두 삭제한다.
+
+4. 전체 정리
+
+   ```sh
+   ./clean.sh all
    ```
 
    > 모든 심볼릭 링크와 archive, temp 디렉토리를 삭제한다.
@@ -133,13 +148,16 @@ JDK 벤더는 temurin만 사용하고 있는데, 시간이 지나서 버전업�
 **SDKMAN!**과 연동해서 사용하면 현재 터미널의 JAVA_HOME을 쉽게 바꿀 수 있는 장점이 있는데... 다음과 같이 하면된다.
 
 ```sh
-sdkman install java 17-tem-local /usr/local/JDK/17
+sdk install java 8-tem-local /usr/local/JDK/8
+sdk install java 17-tem-local /usr/local/JDK/17
+sdk install java 21-tem-local /usr/local/JDK/21
+sdk install java 25-tem-local /usr/local/JDK/25
 ```
 
 * java 바로 우측의 버전이름은 기본의 이름과 겹치지 않게 `-local`이란 접미어를 붙여줌
-  * `17-tem-local`
+  * `8-tem-local`, `17-tem-local`, `21-tem-local`, `25-tem-local`
 * 그 다음에는 로컬의 JDK의 경로를 넣어줌.
-  * `/usr/local/JDK/17`
+  * `/usr/local/JDK/8`, `/usr/local/JDK/17`, `/usr/local/JDK/21`, `/usr/local/JDK/25`
 
 
 
