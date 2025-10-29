@@ -33,33 +33,33 @@ cd /usr/local/JDK
 
 `./update.sh {JDK 버전번호}` 와 같은 형식으로 명령을 실행해주면 다음과 같은 형식으로 설치해줌.
 
-아래는 8, 11, 17, 21 버전을 각각 설치한 경우 다음과 같은 디렉토리 구조를 가지게됨.
+아래는 8, 17, 21, 25 버전을 각각 설치한 경우 다음과 같은 디렉토리 구조를 가지게됨.
 
 ```
   /usr/local/JDK
-    ├── 11 -> archive/11/jdk-11.0.27+6/
-    ├── 17 -> archive/17/jdk-17.0.15+6/
-    ├── 21 -> archive/21/jdk-21.0.7+6/
-    ├── 8 -> archive/8/jdk8u452-b09/
+    ├── 17 -> archive/17/jdk-17.0.16+8
+    ├── 21 -> archive/21/jdk-21.0.8+9
+    ├── 25 -> archive/25/jdk-25+36
+    ├── 8 -> archive/8/jdk8u462-b08
     ├── archive/
-    │   ├── 11/
-    │   │   └── jdk-11.0.27+6/
     │   ├── 17/
-    │   │   └── jdk-17.0.15+6/
+    │   │   └── jdk-17.0.16+8/
     │   ├── 21/
-    │   │   └── jdk-21.0.7+6/
+    │   │   └── jdk-21.0.8+9/
+    │   ├── 25/
+    │   │   └── jdk-25+36/
     │   └── 8/
     │       └── jdk8u452-b09/
     ├── clean.sh*
     ├── temp/
-    │   ├── 11/
-    │   │   ├── OpenJDK11U-jdk_x64_linux_hotspot_11.0.27_6.tar.gz
-    │   │   └── extract/
     │   ├── 17/
     │   │   ├── OpenJDK17U-jdk_x64_linux_hotspot_17.0.15_6.tar.gz
     │   │   └── extract/
     │   ├── 21/
     │   │   ├── OpenJDK21U-jdk_x64_linux_hotspot_21.0.7_6.tar.gz
+    │   │   └── extract/
+    │   ├── 25/
+    │   │   ├── OpenJDK25U-jdk_x64_linux_hotspot_25_36.tar.gz
     │   │   └── extract/
     │   └── 8/
     │       ├── OpenJDK8U-jdk_x64_linux_hotspot_8u452b09.tar.gz
