@@ -93,11 +93,27 @@ JDK 벤더는 temurin만 사용하고 있는데, 시간이 지나서 버전업�
 
 각 머신에서 `update.sh {버전명}`으로 업데이트 해주면 된다.
 
+#### 버전 자동 업데이트
+
+`version.properties`를 Adoptium API로 자동 갱신할 수 있습니다.
+
+**Windows (PowerShell/배치):**
+```batch
+update-versions.bat
+```
+
+**(적용전) Linux/WSL (bash):**
+```sh
+./update-versions.sh version.properties
+```
+
+> 자세한 내용은 [docs/update-versions.md](docs/update-versions.md) 참고
+
 > **😅 해깔릴 수 있는 부분**
 >
 > `install.sh`를 실행할 때, 로컬에 `update.sh`, `clean.sh` 파일이 있으면 해당 파일을 복사하고, 없으면 GitHub에서 다운로드합니다.
 >
-> `version.properties` 또한 `update.sh`, `clean.sh` 실행시 로컬에 파일이 없을 때만 GitHub에서 최신버전을 받아옵니다.  
+> `version.properties` 또한 `update.sh`, `clean.sh` 실행시 로컬에 파일이 없을 때만 GitHub에서 최신버전을 받아옵니다.
 
 
 

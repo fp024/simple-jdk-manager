@@ -4,7 +4,12 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
+        "Adoptium",
+        "endlocal",
         "hotspot",
+        "popd",
+        "pushd",
+        "setlocal",
         "temurin"
     ],
     "ignoreWords": [],
