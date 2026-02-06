@@ -116,6 +116,11 @@ case "$1" in
     mkdir -p "$TEMP_DIR"
     rm -rf "$TEMP_DIR"
 
+    if [ -f "${JDK_ROOT}/version.properties" ]; then
+      echo "[알림] version.properties 파일을 삭제합니다..."
+      rm "${JDK_ROOT}/version.properties"
+    fi
+
     echo "[완료] archive 디렉토리와 모든 심볼릭 링크가 삭제되었습니다."
     ;;
 
