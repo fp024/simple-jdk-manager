@@ -39,6 +39,15 @@ else
   wget https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/clean.sh -O $JDK_SH_ROOT/clean.sh || { echo "[오류] clean.sh 파일 다운로드에 실패했습니다."; exit 1; }
 fi
 
+# version.properties 복사 또는 다운로드
+if [ -f "./version.properties" ]; then
+  echo "[알림] 현재 디렉토리의 version.properties를 복사하여 설치합니다."
+  cp ./version.properties $JDK_SH_ROOT/version.properties
+else
+  echo "[알림] version.properties를 다운로드하여 설치합니다."
+  wget https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/version.properties -O $JDK_SH_ROOT/version.properties || { echo "[오류] version.properties 파일 다운로드에 실패했습니다."; exit 1; }
+fi
+
 chmod u+x $JDK_SH_ROOT/update.sh $JDK_SH_ROOT/clean.sh
 
 echo "[알림] 설치가 완료되었습니다. 설치 경로: $JDK_SH_ROOT"
