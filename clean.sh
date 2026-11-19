@@ -4,9 +4,11 @@ JDK_ROOT=$(pwd)
 ARCHIVE_DIR="${JDK_ROOT}/archive"
 TEMP_DIR="${JDK_ROOT}/temp"
 
-# version.properties 파일이 없을 때만 다운로드
+# version.properties 파일이 없을 때만 다운로드 (GitHub API 우선, 실패 시 raw URL 폴백)
 if [ ! -f "version.properties" ]; then
-  wget -O version.properties "https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/version.properties" || { echo "[오류] version.properties 파일 다운로드에 실패했습니다."; exit 1; }
+  curl -fsL -H "Accept: application/vnd.github.raw" "https://api.github.com/repos/fp024/simple-jdk-manager/contents/version.properties?ref=master" -o version.properties 2>/dev/null || \
+  curl -fsSL "https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/version.properties" -o version.properties || \
+  { echo "[오류] version.properties 파일 다운로드에 실패했습니다."; exit 1; }
 fi
 
 # version.properties에서 지원 버전 목록 가져오기

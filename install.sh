@@ -21,13 +21,22 @@ sudo chown $CURRENT_USER.$CURRENT_GROUP $JDK_SH_ROOT
 # 기존 스크립트 및 version.properties 파일 제거
 rm -f $JDK_SH_ROOT/update.sh $JDK_SH_ROOT/clean.sh $JDK_SH_ROOT/version.properties
 
+# 파일 다운로드 함수 (GitHub API 우선, 실패 시 raw URL 폴백)
+download_file() {
+  _FILE_NAME="$1"
+  _TARGET_PATH="$2"
+  curl -fsL -H "Accept: application/vnd.github.raw" "https://api.github.com/repos/fp024/simple-jdk-manager/contents/${_FILE_NAME}?ref=master" -o "${_TARGET_PATH}" 2>/dev/null || \
+  curl -fsSL "https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/${_FILE_NAME}" -o "${_TARGET_PATH}" || \
+  { echo "[오류] ${_FILE_NAME} 파일 다운로드에 실패했습니다."; exit 1; }
+}
+
 # update.sh 복사 또는 다운로드
 if [ -f "./update.sh" ]; then
   echo "[알림] 현재 디렉토리의 update.sh를 복사하여 설치합니다."
   cp ./update.sh $JDK_SH_ROOT/update.sh
 else
   echo "[알림] update.sh를 다운로드하여 설치합니다."
-  wget https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/update.sh -O $JDK_SH_ROOT/update.sh || { echo "[오류] update.sh 파일 다운로드에 실패했습니다."; exit 1; }
+  download_file "update.sh" "$JDK_SH_ROOT/update.sh"
 fi
 
 # clean.sh 복사 또는 다운로드
@@ -36,7 +45,7 @@ if [ -f "./clean.sh" ]; then
   cp ./clean.sh $JDK_SH_ROOT/clean.sh
 else
   echo "[알림] clean.sh를 다운로드하여 설치합니다."
-  wget https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/clean.sh -O $JDK_SH_ROOT/clean.sh || { echo "[오류] clean.sh 파일 다운로드에 실패했습니다."; exit 1; }
+  download_file "clean.sh" "$JDK_SH_ROOT/clean.sh"
 fi
 
 # version.properties 복사 또는 다운로드
@@ -45,7 +54,7 @@ if [ -f "./version.properties" ]; then
   cp ./version.properties $JDK_SH_ROOT/version.properties
 else
   echo "[알림] version.properties를 다운로드하여 설치합니다."
-  wget https://raw.githubusercontent.com/fp024/simple-jdk-manager/master/version.properties -O $JDK_SH_ROOT/version.properties || { echo "[오류] version.properties 파일 다운로드에 실패했습니다."; exit 1; }
+  download_file "version.properties" "$JDK_SH_ROOT/version.properties"
 fi
 
 chmod u+x $JDK_SH_ROOT/update.sh $JDK_SH_ROOT/clean.sh
